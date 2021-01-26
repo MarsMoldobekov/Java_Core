@@ -52,7 +52,7 @@ public class FirstApp {
 
     //Задание №8
     private static void isLeap(int year) {
-        if ((year % 4 == 0) || (year % 100 == 0 && year % 400 != 0)) {
+        if (year % 4 != 0 || year % 100 == 0 && year % 400 != 0) {
             System.out.println(year + "г. невисокосный");
         } else {
             System.out.println(year + "г. високосный");
