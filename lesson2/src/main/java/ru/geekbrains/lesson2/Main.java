@@ -10,18 +10,26 @@ public class Main {
         changeArr();
         fillDiagonalElements();
 
-        int[] arr = { -100, -500, 0, 54, 9, 1, -1, -9 };
+        int[] arr = {-100, -500, 0, 54, 9, 1, -1, -9};
         System.out.println("Минимальный элемент массива: " + min(arr));
         System.out.println("Максимальный элемент массива: " + max(arr));
+
+        int[] massive = {2, 2, 2, 1, 2, 2, 10, 1};
+        if (checkBalance(massive)) {
+            System.out.println("Существует место, в котором сумма левой и правой части массива равны");
+        } else {
+            System.out.println("Не существует место, в котором сумма левой и правой части массива равны");
+        }
     }
 
     //Задание №1
     private static void invertArr() {
-        int[] arr = { 1, 1, 0, 0, 1, 0, 1, 1, 0, 0 };
+        int[] arr = {1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (arr[i] == 0) ? 1 : 0;
             System.out.print(arr[i] + " ");
         }
+        System.out.println();
     }
 
     //Задание №2
@@ -31,17 +39,19 @@ public class Main {
             arrLengthEight[i] = i * 3;
             System.out.print(arrLengthEight[i] + " ");
         }
+        System.out.println();
     }
 
     //Задание №3
     private static void changeArr() {
-        int[] arr2 = { 1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 };
+        int[] arr2 = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
         for (int i = 0; i < arr2.length; i++) {
             if (arr2[i] < 6) {
                 arr2[i] *= 2;
             }
             System.out.print(arr2[i] + " ");
         }
+        System.out.println();
     }
 
     //Задание №4
@@ -56,6 +66,7 @@ public class Main {
         }
     }
 
+    //Задание №5
     private static int min(int[] arr) {
         int min = INF;
         for (int element : arr) {
@@ -74,5 +85,26 @@ public class Main {
             }
         }
         return max;
+    }
+
+    //Задание №6
+    private static boolean checkBalance(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int left = sum(arr, 0, i);
+            int right = sum(arr, i + 1, arr.length - 1);
+
+            if (left == right) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int sum(int[] arr, int begin, int end) {
+        int sum = 0;
+        for (int i = begin; i <= end; i++) {
+            sum += arr[i];
+        }
+        return sum;
     }
 }
