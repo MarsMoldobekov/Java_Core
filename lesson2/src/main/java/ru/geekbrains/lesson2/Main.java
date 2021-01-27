@@ -20,6 +20,12 @@ public class Main {
         } else {
             System.out.println("Не существует место, в котором сумма левой и правой части массива равны");
         }
+
+        int[] massive2 = {1, 2, 3};
+        shiftArr(massive2, 1);
+        for (int a : massive2) {
+            System.out.print(a + " ");
+        }
     }
 
     //Задание №1
@@ -106,5 +112,26 @@ public class Main {
             sum += arr[i];
         }
         return sum;
+    }
+
+    //Задание №7
+    private static void shiftArr(int[] arr, int n) {
+        int size = arr.length;
+        int index = 0;
+        int t = arr[index];
+        int prev;
+        int i = 0;
+        do {
+            prev = t;
+            index += n;
+            if (index >= size) {
+                index %= size;
+            } else if (index < 0) {
+                index += size;
+            }
+            t = arr[index];
+            arr[index] = prev;
+            i++;
+        } while (i < size);
     }
 }
