@@ -1,5 +1,7 @@
 package ru.geekbrains.lesson2;
 
+import java.util.Arrays;
+
 public class Main {
     private static final int INF = 1_000_000_000;
     private static final int NEGATIVE_INF = -INF;
@@ -23,9 +25,10 @@ public class Main {
 
         int[] massive2 = {3, 5, 6, 1};
         shiftArr(massive2, -2);
-        for (int a : massive2) {
-            System.out.print(a + " ");
-        }
+        System.out.println(Arrays.toString(massive2));
+
+        shiftArr(massive2, 3);
+        System.out.println(Arrays.toString(massive2));
     }
 
     //Задание №1
@@ -33,9 +36,8 @@ public class Main {
         int[] arr = {1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (arr[i] == 0) ? 1 : 0;
-            System.out.print(arr[i] + " ");
         }
-        System.out.println();
+        System.out.println(Arrays.toString(arr));
     }
 
     //Задание №2
@@ -43,21 +45,19 @@ public class Main {
         int[] arrLengthEight = new int[8];
         for (int i = 0; i < arrLengthEight.length; i++) {
             arrLengthEight[i] = i * 3;
-            System.out.print(arrLengthEight[i] + " ");
         }
-        System.out.println();
+        System.out.println(Arrays.toString(arrLengthEight));
     }
 
     //Задание №3
     private static void changeArr() {
-        int[] arr2 = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
-        for (int i = 0; i < arr2.length; i++) {
-            if (arr2[i] < 6) {
-                arr2[i] *= 2;
+        int[] arr = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < 6) {
+                arr[i] *= 2;
             }
-            System.out.print(arr2[i] + " ");
         }
-        System.out.println();
+        System.out.println(Arrays.toString(arr));
     }
 
     //Задание №4
@@ -66,10 +66,9 @@ public class Main {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 matrix[i][j] = (i == j) ? 1 : 0;
-                System.out.print(matrix[i][j] + " ");
             }
-            System.out.println();
         }
+        System.out.println(Arrays.deepToString(matrix));
     }
 
     //Задание №5
@@ -115,18 +114,30 @@ public class Main {
     }
 
     //Задание №7
-    private static void shiftArr(int[] arr, int n) {
+    private static void shiftArr(int[] arr, int shift) {
         int size = arr.length;
-        int[] tempArr = new int[size];
-        for (int i = 0; i < size; i++) {
-            int tempArrIndex = i + n;
-            if (tempArrIndex >= size) {
-                tempArrIndex %= size;
-            } else if (tempArrIndex < 0) {
-                tempArrIndex += size;
+        shift = normalizeShift(shift, size);
+        for (int i = 0; i < shift; i++) {
+            int buffer = arr[0];
+            arr[0] = arr[size - 1];
+
+            for (int j = 1; j < size - 1; j++) {
+                arr[size - j] = arr[size - j - 1];
             }
-            tempArr[tempArrIndex] = arr[i];
+
+            arr[1] = buffer;
         }
-        System.arraycopy(tempArr, 0, arr, 0, arr.length);
+    }
+
+    private static int normalizeShift(int shift, int size) {
+        int finalShift = shift;
+        if (finalShift >= size) {
+            finalShift %= size;
+        } else if (finalShift < 0) {
+            do {
+                finalShift += size;
+            } while (finalShift < 0);
+        }
+        return finalShift;
     }
 }
