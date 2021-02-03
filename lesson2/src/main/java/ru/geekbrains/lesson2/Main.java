@@ -89,15 +89,11 @@ public class Main {
         int[][] matrix = new int[ARRAY_LENGTH][ARRAY_LENGTH];
 
         for (int i = 0; i < ARRAY_LENGTH; i++) {
-            for (int j = 0; j < ARRAY_LENGTH; j++) {
-                matrix[i][j] = (i == j)  || (i + j == ARRAY_LENGTH - 1) ? 1 : 0;
-            }
+            matrix[i][i] = matrix[i][ARRAY_LENGTH - i - 1] = 1;
         }
 
         System.out.println(Arrays.deepToString(matrix));
     }
-
-    //Задание №5
 
     /**
      * Задание №5. Минимальный/максимальный элемент массива
