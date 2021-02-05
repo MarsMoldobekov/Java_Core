@@ -135,7 +135,10 @@ public class Main {
     private static String writeHelpWord(String secretWord, String userWord, String helpWord) {
         StringBuilder builder = new StringBuilder(helpWord);
 
-        for (int i = 0; i < secretWord.length() && i < userWord.length(); i++) {
+        int secretWordLength = secretWord.length();
+        int userWordLength = userWord.length();
+
+        for (int i = 0; i < secretWordLength && i < userWordLength; i++) {
             char c1 = secretWord.charAt(i);
             char c2 = userWord.charAt(i);
 
