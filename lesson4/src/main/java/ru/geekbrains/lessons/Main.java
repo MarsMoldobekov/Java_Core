@@ -8,22 +8,24 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Random random = new Random();
 
-    private static int SIZE = 3;
-    private static int DOTS_TO_WIN = 3;
+    private static char[][] map;
+
+    private static final int SIZE = 3;
+    private static final int DOTS_TO_WIN = 3;
 
     private static final char DOT_EMPTY = '*';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
 
-    private static char[][] map;
-
     public static void main(String[] args) {
+        int[] coordinates;
+
         initMap();
         printMap();
 
         while (true) {
-            humanTurn();
-            if (checkWin(DOT_X)) {
+            coordinates = humanTurn();
+            if (checkWin(coordinates, DOT_X)) {
                 System.out.println("Победил человек");
                 break;
             }
@@ -31,9 +33,9 @@ public class Main {
                 System.out.println("Ничья");
                 break;
             }
-            aiTurn();
+            coordinates = aiTurn();
             printMap();
-            if (checkWin(DOT_O)) {
+            if (checkWin(coordinates, DOT_O)) {
                 System.out.println("Победил Искуственный Интеллект");
                 break;
             }
@@ -46,15 +48,50 @@ public class Main {
         scanner.close();
     }
 
-    private static boolean checkWin(char symbol) {
-        if (map[0][0] == symbol && map[0][1] == symbol && map[0][2] == symbol) return true;
-        if (map[1][0] == symbol && map[1][1] == symbol && map[1][2] == symbol) return true;
-        if (map[2][0] == symbol && map[2][1] == symbol && map[2][2] == symbol) return true;
-        if (map[0][0] == symbol && map[1][0] == symbol && map[2][0] == symbol) return true;
-        if (map[0][1] == symbol && map[1][1] == symbol && map[2][1] == symbol) return true;
-        if (map[0][2] == symbol && map[1][2] == symbol && map[2][2] == symbol) return true;
-        if (map[0][0] == symbol && map[1][1] == symbol && map[2][2] == symbol) return true;
-        if (map[2][0] == symbol && map[1][1] == symbol && map[0][2] == symbol) return true;
+    private static boolean checkWin(int[] coordinates, char symbol) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+
+        for (int i = 0; i < SIZE; i++) {
+            if (map[y][i] != symbol) {
+                break;
+            }
+            if (i + 1 == DOTS_TO_WIN) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++) {
+            if (map[i][x] != symbol) {
+                break;
+            }
+            if (i + 1 == DOTS_TO_WIN) {
+                return true;
+            }
+        }
+
+        if (x == y) {
+            for (int i = 0; i < SIZE; i++) {
+                if (map[i][i] != symbol) {
+                    break;
+                }
+                if (i + 1 == DOTS_TO_WIN) {
+                    return true;
+                }
+            }
+        }
+
+        if (x + y == SIZE - 1) {
+            for (int i = 0; i < SIZE; i++) {
+                if (map[i][SIZE - i - 1] != symbol) {
+                    break;
+                }
+                if (i + 1 == DOTS_TO_WIN) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -69,7 +106,7 @@ public class Main {
         return true;
     }
 
-    private static void aiTurn() {
+    private static int[] aiTurn() {
         int x, y;
 
         do {
@@ -79,9 +116,11 @@ public class Main {
 
         System.out.printf("Компьютер походил в точку %d %d\n", (x + 1), (y + 1));
         map[y][x] = DOT_O;
+
+        return new int[] {x, y};
     }
 
-    private static void humanTurn() {
+    private static int[] humanTurn() {
         int x, y;
 
         do {
@@ -91,6 +130,8 @@ public class Main {
         } while (isCellValid(x, y));
 
         map[y][x] = DOT_X;
+
+        return new int[] {x, y};
     }
 
     private static boolean isCellValid(int x, int y) {
