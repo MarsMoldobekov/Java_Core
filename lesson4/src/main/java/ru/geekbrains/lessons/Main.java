@@ -10,21 +10,23 @@ public class Main {
 
     private static char[][] map;
 
-    private static final int SIZE = 3;
-    private static final int DOTS_TO_WIN = 3;
+    private static int SIZE;
+    private static int DOTS_TO_WIN;
 
     private static final char DOT_EMPTY = '*';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
 
     public static void main(String[] args) {
-        int[] coordinates;
-
+        isLargeMap();
         initMap();
         printMap();
 
         while (true) {
+            int[] coordinates;
+
             coordinates = humanTurn();
+            printMap();
             if (checkWin(coordinates, DOT_X)) {
                 System.out.println("Победил человек");
                 break;
@@ -33,6 +35,7 @@ public class Main {
                 System.out.println("Ничья");
                 break;
             }
+
             coordinates = aiTurn();
             printMap();
             if (checkWin(coordinates, DOT_O)) {
@@ -46,6 +49,21 @@ public class Main {
         }
         System.out.println("Игра закончена");
         scanner.close();
+    }
+
+    private static void isLargeMap() {
+        System.out.print("1. Карта 3х3.\n2. Карта 5х5, и условие победы - 4 подряд символа.\nВаш выбор: ");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1 -> {
+                SIZE = 3;
+                DOTS_TO_WIN = 3;
+            }
+            case 2 -> {
+                SIZE = 5;
+                DOTS_TO_WIN = 4;
+            }
+        }
     }
 
     private static boolean checkWin(int[] coordinates, char symbol) {
