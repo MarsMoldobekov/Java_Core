@@ -74,18 +74,13 @@ public class Main {
                         break;
                     }
 
-                    StringBuilder builder = new StringBuilder();
-
-                    builder.append("Ответ неправельный. ")
-                            .append(String.format("Осталось %d попыток. ", attempts));
-
                     if (secretNumber < userNumber) {
-                        builder.append("ПОДСКАЗКА: ваше число больше загаданного.");
+                        System.out.printf("Ответ неправельный. Осталось %d попыток. " +
+                                "ПОДСКАЗКА: ваше число больше загаданного.\n", attempts);
                     } else {
-                        builder.append("ПОДСКАЗКА: ваше число меньше загаданного.");
+                        System.out.printf("Ответ неправельный. Осталось %d попыток. " +
+                                "ПОДСКАЗКА: ваше число меньше загаданного.\n", attempts);
                     }
-
-                    System.out.println(builder.toString());
                 }
             } while (true);
 
