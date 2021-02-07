@@ -16,6 +16,14 @@ public class Main {
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
 
+    /**
+     * Хранит количество символов на строках, столбцах, диагоналях
+     * Количество элементов 2 * n + 2, n - размер поля
+     * Каждый элемент в массиве будет суммой X или O по горизонтали (первые n позиций в массиве),
+     * по вертикали (вторые n позиций в массиве) и по диагонали (последние 2 позиции).
+     */
+    private static int[] sums;
+
     private enum Player {
         HUMAN, AI
     }
@@ -45,6 +53,7 @@ public class Main {
             }
         }
 
+        sums = new int[2 * size + 2];
         map = new char[size][size];
 
         for (int i = 0; i < size; i++) {
@@ -58,26 +67,22 @@ public class Main {
         Player player = Player.HUMAN;
 
         while (true) {
-            int[] coordinates;
-            char symbol;
+            Player previousPlayer = player;
 
             switch (player) {
                 case HUMAN -> {
-                    coordinates = humanTurn();
-                    symbol = DOT_X;
                     player = Player.AI;
+                    humanTurn();
                 }
                 case AI -> {
-                    coordinates = aiTurn();
-                    symbol = DOT_O;
                     player = Player.HUMAN;
+                    aiTurn();
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + player);
             }
 
             printMap();
 
-            if (checkWin(coordinates, symbol)) {
+            if (checkWin(previousPlayer)) {
                 System.out.println("Победа!");
                 break;
             }
@@ -89,47 +94,12 @@ public class Main {
         }
     }
 
-    private static boolean checkWin(int[] coordinates, char symbol) {
-        int x = coordinates[0];
-        int y = coordinates[1];
+    private static boolean checkWin(Player player) {
+        int winScore = (player == Player.HUMAN) ? dotsToWin : -dotsToWin;
 
-        for (int i = 0; i < size; i++) {
-            if (map[y][i] != symbol) {
-                break;
-            }
-            if (i + 1 == dotsToWin) {
+        for (int sum : sums) {
+            if (sum == winScore) {
                 return true;
-            }
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (map[i][x] != symbol) {
-                break;
-            }
-            if (i + 1 == dotsToWin) {
-                return true;
-            }
-        }
-
-        if (x == y) {
-            for (int i = 0; i < size; i++) {
-                if (map[i][i] != symbol) {
-                    break;
-                }
-                if (i + 1 == dotsToWin) {
-                    return true;
-                }
-            }
-        }
-
-        if (x + y == size - 1) {
-            for (int i = 0; i < size; i++) {
-                if (map[i][size - i - 1] != symbol) {
-                    break;
-                }
-                if (i + 1 == dotsToWin) {
-                    return true;
-                }
             }
         }
 
@@ -144,10 +114,11 @@ public class Main {
                 }
             }
         }
+
         return true;
     }
 
-    private static int[] aiTurn() {
+    private static void aiTurn() {
         int x, y;
 
         do {
@@ -158,10 +129,10 @@ public class Main {
         System.out.printf("Компьютер походил в точку %d %d\n", (x + 1), (y + 1));
         map[y][x] = DOT_O;
 
-        return new int[] {x, y};
+        fillSums(new int[]{x, y}, Player.AI);
     }
 
-    private static int[] humanTurn() {
+    private static void humanTurn() {
         int x, y;
 
         do {
@@ -173,7 +144,44 @@ public class Main {
 
         map[y][x] = DOT_X;
 
-        return new int[] {x, y};
+        fillSums(new int[]{x, y}, Player.HUMAN);
+    }
+
+    private static void fillSums(int[] coordinates, Player player) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int length = sums.length;
+
+        int indexVertical = size + x;
+        int indexMainDiagonal = length - 2;
+        int indexSideDiagonal = length - 1;
+
+        switch (player) {
+            case HUMAN -> {
+                sums[y]++;
+                sums[indexVertical]++;
+
+                if (x == y) {
+                    sums[indexMainDiagonal]++;
+                }
+
+                if (x + y == size - 1) {
+                    sums[indexSideDiagonal]++;
+                }
+            }
+            case AI -> {
+                sums[y]--;
+                sums[indexVertical]--;
+
+                if (x == y) {
+                    sums[indexMainDiagonal]--;
+                }
+
+                if (x + y == size - 1) {
+                    sums[indexSideDiagonal]--;
+                }
+            }
+        }
     }
 
     private static boolean isCellValid(int x, int y) {
