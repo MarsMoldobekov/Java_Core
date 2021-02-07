@@ -4,64 +4,87 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
     private static final Scanner scanner = new Scanner(System.in);
     private static final Random random = new Random();
 
     private static char[][] map;
 
-    private static int SIZE;
-    private static int DOTS_TO_WIN;
+    private static int size;
+    private static int dotsToWin;
 
     private static final char DOT_EMPTY = '*';
     private static final char DOT_X = 'X';
     private static final char DOT_O = 'O';
 
+    private enum Player {
+        HUMAN, AI
+    }
+
     public static void main(String[] args) {
-        isLargeMap();
-        initMap();
+        init();
         printMap();
+        run();
 
-        while (true) {
-            int[] coordinates;
-
-            coordinates = humanTurn();
-            printMap();
-            if (checkWin(coordinates, DOT_X)) {
-                System.out.println("Победил человек");
-                break;
-            }
-            if (isMapFull()) {
-                System.out.println("Ничья");
-                break;
-            }
-
-            coordinates = aiTurn();
-            printMap();
-            if (checkWin(coordinates, DOT_O)) {
-                System.out.println("Победил Искуственный Интеллект");
-                break;
-            }
-            if (isMapFull()) {
-                System.out.println("Ничья");
-                break;
-            }
-        }
-        System.out.println("Игра закончена");
         scanner.close();
     }
 
-    private static void isLargeMap() {
-        System.out.print("1. Карта 3х3.\n2. Карта 5х5, и условие победы - 4 подряд символа.\nВаш выбор: ");
+    private static void init() {
+        System.out.print("1. Карта 3х3. Условие победы - 3 символа подряд.\n" +
+                "2. Карта 5х5. Условие победы - 4 символа подряд.\nВаш выбор: ");
+
         int choice = scanner.nextInt();
+
         switch (choice) {
             case 1 -> {
-                SIZE = 3;
-                DOTS_TO_WIN = 3;
+                size = 3;
+                dotsToWin = 3;
             }
             case 2 -> {
-                SIZE = 5;
-                DOTS_TO_WIN = 4;
+                size = 5;
+                dotsToWin = 5;
+            }
+        }
+
+        map = new char[size][size];
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                map[i][j] = DOT_EMPTY;
+            }
+        }
+    }
+
+    private static void run() {
+        Player player = Player.HUMAN;
+
+        while (true) {
+            int[] coordinates;
+            char symbol;
+
+            switch (player) {
+                case HUMAN -> {
+                    coordinates = humanTurn();
+                    symbol = DOT_X;
+                    player = Player.AI;
+                }
+                case AI -> {
+                    coordinates = aiTurn();
+                    symbol = DOT_O;
+                    player = Player.HUMAN;
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + player);
+            }
+
+            printMap();
+
+            if (checkWin(coordinates, symbol)) {
+                System.out.println("Победа!");
+                break;
+            }
+
+            if (isMapFull()) {
+                System.out.println("Ничья");
+                break;
             }
         }
     }
@@ -70,41 +93,41 @@ public class Main {
         int x = coordinates[0];
         int y = coordinates[1];
 
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             if (map[y][i] != symbol) {
                 break;
             }
-            if (i + 1 == DOTS_TO_WIN) {
+            if (i + 1 == dotsToWin) {
                 return true;
             }
         }
 
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             if (map[i][x] != symbol) {
                 break;
             }
-            if (i + 1 == DOTS_TO_WIN) {
+            if (i + 1 == dotsToWin) {
                 return true;
             }
         }
 
         if (x == y) {
-            for (int i = 0; i < SIZE; i++) {
+            for (int i = 0; i < size; i++) {
                 if (map[i][i] != symbol) {
                     break;
                 }
-                if (i + 1 == DOTS_TO_WIN) {
+                if (i + 1 == dotsToWin) {
                     return true;
                 }
             }
         }
 
-        if (x + y == SIZE - 1) {
-            for (int i = 0; i < SIZE; i++) {
-                if (map[i][SIZE - i - 1] != symbol) {
+        if (x + y == size - 1) {
+            for (int i = 0; i < size; i++) {
+                if (map[i][size - i - 1] != symbol) {
                     break;
                 }
-                if (i + 1 == DOTS_TO_WIN) {
+                if (i + 1 == dotsToWin) {
                     return true;
                 }
             }
@@ -114,8 +137,8 @@ public class Main {
     }
 
     private static boolean isMapFull() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 if (map[i][j] == DOT_EMPTY) {
                     return false;
                 }
@@ -128,8 +151,8 @@ public class Main {
         int x, y;
 
         do {
-            x = random.nextInt(SIZE);
-            y = random.nextInt(SIZE);
+            x = random.nextInt(size);
+            y = random.nextInt(size);
         } while (isCellValid(x, y));
 
         System.out.printf("Компьютер походил в точку %d %d\n", (x + 1), (y + 1));
@@ -143,6 +166,7 @@ public class Main {
 
         do {
             System.out.println("Введите координаты в формате X Y");
+
             x = scanner.nextInt() - 1;
             y = scanner.nextInt() - 1;
         } while (isCellValid(x, y));
@@ -153,33 +177,28 @@ public class Main {
     }
 
     private static boolean isCellValid(int x, int y) {
-        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return true;
-        if (map[y][x] == DOT_EMPTY) return false;
-        return true;
-    }
-
-    private static void initMap() {
-        map = new char[SIZE][SIZE];
-
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                map[i][j] = DOT_EMPTY;
-            }
-        }
+        return !((x >= 0 && x < size) &&
+                (y >= 0 && y < size) &&
+                map[y][x] == DOT_EMPTY);
     }
 
     private static void printMap() {
-        for (int i = 0; i <= SIZE; i++) {
+        for (int i = 0; i <= size; i++) {
             System.out.print(i + " ");
         }
+
         System.out.println();
-        for (int i = 0; i < SIZE; i++) {
+
+        for (int i = 0; i < size; i++) {
             System.out.print((i + 1) + " ");
-            for (int j = 0; j < SIZE; j++) {
+
+            for (int j = 0; j < size; j++) {
                 System.out.print(map[i][j] + " ");
             }
+
             System.out.println();
         }
+
         System.out.println();
     }
 }
