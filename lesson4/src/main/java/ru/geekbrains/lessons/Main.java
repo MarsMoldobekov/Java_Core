@@ -30,15 +30,13 @@ public class Main {
 
     public static void main(String[] args) {
         init();
-        printMap();
         run();
-
-        scanner.close();
+        finish();
     }
 
     private static void init() {
         System.out.print("1. Карта 3х3. Условие победы - 3 символа подряд.\n" +
-                "2. Карта 5х5. Условие победы - 4 символа подряд.\nВаш выбор: ");
+                "2. Карта 5х5. Условие победы - 5 символа подряд.\nВаш выбор: ");
 
         int choice = scanner.nextInt();
 
@@ -61,6 +59,8 @@ public class Main {
                 map[i][j] = DOT_EMPTY;
             }
         }
+
+        printMap();
     }
 
     private static void run() {
@@ -208,5 +208,9 @@ public class Main {
         }
 
         System.out.println();
+    }
+
+    private static void finish() {
+        scanner.close();
     }
 }
