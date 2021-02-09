@@ -24,6 +24,13 @@ public class Main {
      */
     private static int[] sums;
 
+    private static final int ROWS_BEGIN = 0;
+    private static final int ROWS_END = 2;
+    private static final int COLUMNS_BEGIN = 3;
+    private static final int COLUMNS_END = 5;
+    private static final int MAIN_DIAGONAL = 6;
+    private static final int SIDE_DIAGONAL = 7;
+
     private enum Player {
         HUMAN, AI
     }
@@ -49,6 +56,7 @@ public class Main {
                 size = 5;
                 dotsToWin = 5;
             }
+            default -> throw new IllegalArgumentException("Illegal argument " + choice);
         }
 
         sums = new int[2 * size + 2];
@@ -119,75 +127,157 @@ public class Main {
     }
 
     private static void aiTurn() {
-        int x, y;
+        int[] coordinates = new int[2];
 
-        do {
-            x = random.nextInt(size);
-            y = random.nextInt(size);
-        } while (isCellValid(x, y));
+        if (checkRows(coordinates)) {
 
-        System.out.printf("Компьютер походил в точку %d %d\n", (x + 1), (y + 1));
-        map[y][x] = DOT_O;
+        } else if (checkColumns(coordinates)) {
 
-        fillSums(new int[]{x, y}, Player.AI);
+        } else if (checkMainDiagonal(coordinates)) {
+
+        } else if (checkSideDiagonal(coordinates)) {
+
+        } else {
+            int row, col;
+
+            do {
+                row = random.nextInt(size);
+                col = random.nextInt(size);
+            } while (!isCellValid(row, col));
+
+            coordinates[0] = row;
+            coordinates[1] = col;
+        }
+
+        int row = coordinates[0];
+        int col = coordinates[1];
+
+        System.out.printf("Компьютер походил в точку %d %d\n", row + 1, col + 1);
+        map[row][col] = DOT_O;
+
+        fillSums(coordinates, Player.AI);
+    }
+
+    private static boolean checkRows(int[] coordinates) {
+        for (int row = ROWS_BEGIN; row <= ROWS_END; row++) {
+            if (sums[row] == dotsToWin - 1) {
+                for (int col = 0; col < size; col++) {
+                    if (isCellValid(row, col)) {
+                        coordinates[0] = row;
+                        coordinates[1] = col;
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean checkColumns(int[] coordinates) {
+        for (int col = COLUMNS_BEGIN; col <= COLUMNS_END; col++) {
+            if (sums[col] == dotsToWin - 1) {
+                int colInMap = col - size;
+                for (int row = 0; row < size; row++) {
+                    if (isCellValid(row, colInMap)) {
+                        coordinates[0] = row;
+                        coordinates[1] = colInMap;
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean checkMainDiagonal(int[] coordinates) {
+        if (sums[MAIN_DIAGONAL] == dotsToWin - 1) {
+            for (int i = 0; i < size; i++) {
+                if (isCellValid(i, i)) {
+                    coordinates[0] = coordinates[1] = i;
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean checkSideDiagonal(int[] coordinates) {
+        if (sums[SIDE_DIAGONAL] == dotsToWin - 1) {
+            for (int i = 0; i < size; i++) {
+                if (isCellValid(i, size - i - 1)) {
+                    coordinates[0] = i;
+                    coordinates[1] = size - i - 1;
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static void humanTurn() {
-        int x, y;
+        int row, col;
 
         do {
-            System.out.println("Введите координаты в формате X Y");
+            System.out.println("Введите координаты в строка/столбец");
 
-            x = scanner.nextInt() - 1;
-            y = scanner.nextInt() - 1;
-        } while (isCellValid(x, y));
+            row = scanner.nextInt() - 1;
+            col = scanner.nextInt() - 1;
+        } while (!isCellValid(row, col));
 
-        map[y][x] = DOT_X;
+        map[row][col] = DOT_X;
 
-        fillSums(new int[]{x, y}, Player.HUMAN);
+        fillSums(new int[]{row, col}, Player.HUMAN);
     }
 
     private static void fillSums(int[] coordinates, Player player) {
-        int x = coordinates[0];
-        int y = coordinates[1];
+        int row = coordinates[0];
+        int col = coordinates[1];
         int length = sums.length;
 
-        int indexVertical = size + x;
+        int indexVertical = size + col;
         int indexMainDiagonal = length - 2;
         int indexSideDiagonal = length - 1;
 
         switch (player) {
             case HUMAN -> {
-                sums[y]++;
+                sums[row]++;
                 sums[indexVertical]++;
 
-                if (x == y) {
+                if (row == col) {
                     sums[indexMainDiagonal]++;
                 }
 
-                if (x + y == size - 1) {
+                if (row + col == size - 1) {
                     sums[indexSideDiagonal]++;
                 }
             }
             case AI -> {
-                sums[y]--;
+                sums[row]--;
                 sums[indexVertical]--;
 
-                if (x == y) {
+                if (row == col) {
                     sums[indexMainDiagonal]--;
                 }
 
-                if (x + y == size - 1) {
+                if (row + col == size - 1) {
                     sums[indexSideDiagonal]--;
                 }
             }
         }
     }
 
-    private static boolean isCellValid(int x, int y) {
-        return !((x >= 0 && x < size) &&
-                (y >= 0 && y < size) &&
-                map[y][x] == DOT_EMPTY);
+    private static boolean isCellValid(int row, int col) {
+        return (col >= 0 && col < size) &&
+                (row >= 0 && row < size) &&
+                map[row][col] == DOT_EMPTY;
     }
 
     private static void printMap() {
