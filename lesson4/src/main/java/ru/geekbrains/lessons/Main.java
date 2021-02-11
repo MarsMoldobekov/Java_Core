@@ -24,12 +24,12 @@ public class Main {
      */
     private static int[] sums;
 
-    private static final int ROWS_BEGIN = 0;
-    private static final int ROWS_END = 2;
-    private static final int COLUMNS_BEGIN = 3;
-    private static final int COLUMNS_END = 5;
-    private static final int MAIN_DIAGONAL = 6;
-    private static final int SIDE_DIAGONAL = 7;
+    private static int rowsBegin;
+    private static int rowsEnd;
+    private static int columnsBegin;
+    private static int columnsEnd;
+    private static int mainDiagonal;
+    private static int sideDiagonal;
 
     private enum Player {
         HUMAN, AI
@@ -67,6 +67,13 @@ public class Main {
                 map[i][j] = DOT_EMPTY;
             }
         }
+
+        rowsBegin = 0;
+        rowsEnd = size - 1;
+        columnsBegin = size;
+        columnsEnd = (size << 1) - 1;
+        sideDiagonal = sums.length - 1;
+        mainDiagonal = sideDiagonal - 1;
 
         printMap();
     }
@@ -159,7 +166,7 @@ public class Main {
     }
 
     private static boolean checkRows(int[] coordinates) {
-        for (int row = ROWS_BEGIN; row <= ROWS_END; row++) {
+        for (int row = rowsBegin; row <= rowsEnd; row++) {
             if (sums[row] == dotsToWin - 1) {
                 for (int col = 0; col < size; col++) {
                     if (isCellValid(row, col)) {
@@ -176,7 +183,7 @@ public class Main {
     }
 
     private static boolean checkColumns(int[] coordinates) {
-        for (int col = COLUMNS_BEGIN; col <= COLUMNS_END; col++) {
+        for (int col = columnsBegin; col <= columnsEnd; col++) {
             if (sums[col] == dotsToWin - 1) {
                 int colInMap = col - size;
                 for (int row = 0; row < size; row++) {
@@ -194,7 +201,7 @@ public class Main {
     }
 
     private static boolean checkMainDiagonal(int[] coordinates) {
-        if (sums[MAIN_DIAGONAL] == dotsToWin - 1) {
+        if (sums[mainDiagonal] == dotsToWin - 1) {
             for (int i = 0; i < size; i++) {
                 if (isCellValid(i, i)) {
                     coordinates[0] = coordinates[1] = i;
@@ -208,7 +215,7 @@ public class Main {
     }
 
     private static boolean checkSideDiagonal(int[] coordinates) {
-        if (sums[SIDE_DIAGONAL] == dotsToWin - 1) {
+        if (sums[sideDiagonal] == dotsToWin - 1) {
             for (int i = 0; i < size; i++) {
                 if (isCellValid(i, size - i - 1)) {
                     coordinates[0] = i;
@@ -226,7 +233,7 @@ public class Main {
         int row, col;
 
         do {
-            System.out.println("Введите координаты в строка/столбец");
+            System.out.println("Введите координаты в формате строка/столбец");
 
             row = scanner.nextInt() - 1;
             col = scanner.nextInt() - 1;
