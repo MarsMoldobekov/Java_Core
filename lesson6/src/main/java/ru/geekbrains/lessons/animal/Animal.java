@@ -1,8 +1,6 @@
 package ru.geekbrains.lessons.animal;
 
-public class Animal {
-    public static int objectAnimalCount;
-
+public abstract class Animal {
     protected int runningRestrictions;
     protected int swimmingRestrictions;
 
@@ -10,23 +8,13 @@ public class Animal {
 
     public Animal(String name) {
         this.name = name;
-
-        objectAnimalCount++;
-    }
-
-    public static int count() {
-        return objectAnimalCount;
     }
 
     public String getName() {
         return name;
     }
 
-    public void run(int distance) {
-        System.out.printf("%s пробежал %dм.\n", name, distance);
-    }
+    public abstract void run(int distance);
 
-    public void swim(int distance) {
-        System.out.printf("%s проплыл %dм.\n", name, distance);
-    }
+    public abstract void swim(int distance);
 }

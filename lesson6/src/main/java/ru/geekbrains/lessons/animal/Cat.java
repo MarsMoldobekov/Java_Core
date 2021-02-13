@@ -5,6 +5,7 @@ public class Cat extends Animal {
 
     public Cat(String name) {
         super(name);
+        swimmingRestrictions = 0;
         runningRestrictions = 200;
         objectCatCount++;
     }
