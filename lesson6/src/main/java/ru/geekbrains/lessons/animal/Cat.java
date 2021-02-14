@@ -10,10 +10,6 @@ public class Cat extends Animal {
         objectCatCount++;
     }
 
-    public static int count() {
-        return objectCatCount;
-    }
-
     @Override
     public void run(int distance) {
         if (distance > runningRestrictions) {

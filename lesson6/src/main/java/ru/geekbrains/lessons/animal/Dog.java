@@ -10,10 +10,6 @@ public class Dog extends Animal {
         objectDogCount++;
     }
 
-    public static int count() {
-        return objectDogCount;
-    }
-
     @Override
     public void run(int distance) {
         if (distance > runningRestrictions) {
