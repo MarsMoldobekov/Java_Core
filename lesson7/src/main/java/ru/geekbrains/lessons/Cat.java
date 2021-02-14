@@ -12,10 +12,17 @@ public class Cat {
         isFull = false;
     }
 
-    public void info() {
-        String info = "Кот: " + name +
-                "\nАппетит: " + appetite;
-        System.out.println(info);
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "name='" + name + '\'' +
+                ", appetite=" + appetite +
+                ", isFull=" + isFull +
+                '}';
+    }
+
+    public void printCat() {
+        System.out.println(toString());
     }
 
     public String isFull() {
