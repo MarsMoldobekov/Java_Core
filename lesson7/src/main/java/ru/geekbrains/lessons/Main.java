@@ -4,20 +4,28 @@ public class Main {
 
     public static void main(String[] args) {
         Cat[] cats = {
-                new Cat("Кiт", 5),
-                new Cat("Котометр", 5),
-                new Cat("Котитзе", 20),
-                new Cat("Котан", 10),
-                new Cat("Котострофа", 15)
+                new Cat("Барсик", 5),
+                new Cat("Леопольд", 5),
+                new Cat("Том", 20),
+                new Cat("Масяня", 10),
+                new Cat("Гарфилд", 15)
         };
 
         Plate plate = new Plate(50);
 
+        makeCatsToEat(cats, plate);
+        plate.info();
+
+        plate.addFood(15);
+
+        makeCatsToEat(cats, plate);
+        plate.info();
+    }
+
+    private static void makeCatsToEat(Cat[] cats, Plate plate) {
         for (Cat cat : cats) {
             cat.eat(plate);
             System.out.println(cat.isFull());
         }
-
-        plate.info();
     }
 }

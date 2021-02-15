@@ -26,11 +26,18 @@ public class Cat {
     }
 
     public String isFull() {
-        String catName = "Кот " + name;
-        return isFull ? catName + " ссыт." : catName + " голоден.";
+        if (isFull) {
+            return "Кот " + name + " ссыт.";
+        } else {
+            return "Кот " + name + " голоден.";
+        }
     }
 
     public void eat(Plate plate) {
+        if (isFull) {
+            return;
+        }
+
         if (plate.isEnough(appetite)) {
             plate.decreaseFood(appetite);
             isFull = true;
