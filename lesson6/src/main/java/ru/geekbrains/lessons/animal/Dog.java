@@ -1,13 +1,17 @@
 package ru.geekbrains.lessons.animal;
 
 public class Dog extends Animal {
-    public static int objectDogCount;
+    private static int objectDogCount;
 
     public Dog(String name) {
         super(name);
         swimmingRestrictions = 10;
         runningRestrictions = 500;
         objectDogCount++;
+    }
+
+    public static int getObjectDogCount() {
+        return objectDogCount;
     }
 
     @Override
