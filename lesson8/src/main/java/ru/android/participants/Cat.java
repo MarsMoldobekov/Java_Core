@@ -1,17 +1,17 @@
 package ru.android.participants;
 
 public class Cat extends Participant {
-    public Cat(String name) {
-        super(name);
+    public Cat(String name, int runningRestriction, int jumpingRestriction) {
+        super(name, runningRestriction, jumpingRestriction);
     }
 
     @Override
-    public void run() {
-        System.out.println("Кот пробежал.");
+    public void run(int distance) {
+        System.out.printf("Кот %s пробежал дистанцию в %dм. Поздравляю.\n", name, distance);
     }
 
     @Override
-    public void jump() {
-        System.out.println("Кот прыгнул.");
+    public void jump(int height) {
+        System.out.printf("Кот %s перепрыгнул стену высотой в %dм. Поздравляю.\n", name, height);
     }
 }

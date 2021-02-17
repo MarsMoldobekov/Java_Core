@@ -11,11 +11,11 @@ import ru.android.participants.Robot;
 public class Main {
     public static void main(String[] args) {
         Participant[] participants = {
-                new Human("Пётр"),
-                new Robot("Тесла"),
-                new Human("Катерина"),
-                new Robot("Андроид"),
-                new Cat("Лео")
+                new Human("Пётр", 150, 2),
+                new Robot("Тесла", 200, 0),
+                new Human("Катерина", 125, 2),
+                new Robot("Андроид", 300, 0),
+                new Cat("Лео", 100, 3)
         };
 
         Obstacle[] obstacles = {
@@ -27,6 +27,29 @@ public class Main {
                 new Treadmill(120)
         };
 
+        printParticipantsInfo(participants);
+        printObstaclesInfo(obstacles);
+
+        runChallenge(participants, obstacles);
+    }
+
+    private static void printParticipantsInfo(Participant[] participants) {
+        for (Participant participant : participants) {
+            participant.info();
+        }
+
+        System.out.println();
+    }
+
+    private static void printObstaclesInfo(Obstacle[] obstacles) {
+        for (Obstacle obstacle : obstacles) {
+            obstacle.info();
+        }
+
+        System.out.println();
+    }
+
+    private static void runChallenge(Participant[] participants, Obstacle[] obstacles) {
         for (Participant participant : participants) {
             participant.passObstacles(obstacles);
         }

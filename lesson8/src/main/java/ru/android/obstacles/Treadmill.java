@@ -1,14 +1,14 @@
 package ru.android.obstacles;
 
-public class Treadmill extends Obstacle {
-    private final int length; //meters
+public class Treadmill implements Obstacle {
+    private final int distance; //meters
 
-    public Treadmill(int length) {
-        this.length = length;
+    public Treadmill(int distance) {
+        this.distance = distance;
     }
 
-    public int getLength() {
-        return length;
+    public int getDistance() {
+        return distance;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class Treadmill extends Obstacle {
     @Override
     public String toString() {
         return "Treadmill{" +
-                "length=" + length +
+                "length=" + distance +
                 '}';
     }
 }

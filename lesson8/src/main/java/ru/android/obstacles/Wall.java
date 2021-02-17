@@ -1,6 +1,6 @@
 package ru.android.obstacles;
 
-public class Wall extends Obstacle {
+public class Wall implements Obstacle {
     private final int height; //meters
 
     public Wall(int height) {
