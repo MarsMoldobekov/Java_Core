@@ -1,30 +1,33 @@
 package ru.android;
 
+import ru.android.factories.ObstacleFactory;
+import ru.android.factories.ParticipantFactory;
 import ru.android.obstacles.Obstacle;
-import ru.android.obstacles.Treadmill;
-import ru.android.obstacles.Wall;
-import ru.android.participants.Cat;
-import ru.android.participants.Human;
 import ru.android.participants.Participant;
-import ru.android.participants.Robot;
+
+import static ru.android.factories.ObstacleType.*;
+import static ru.android.factories.ParticipantType.*;
 
 public class Main {
+    private static final ObstacleFactory obstacleFactory = new ObstacleFactory();
+    private static final ParticipantFactory participantFactory = new ParticipantFactory();
+
     public static void main(String[] args) {
         Participant[] participants = {
-                new Human("Пётр", 150, 2),
-                new Robot("Тесла", 200, 0),
-                new Human("Катерина", 125, 2),
-                new Robot("Андроид", 300, 0),
-                new Cat("Лео", 100, 3)
+                participantFactory.getParticipant(HUMAN, "Пётр", 150, 2),
+                participantFactory.getParticipant(ROBOT, "Тесла", 200, 0),
+                participantFactory.getParticipant(HUMAN, "Катерина", 150, 2),
+                participantFactory.getParticipant(ROBOT, "Андроид", 200, 0),
+                participantFactory.getParticipant(CAT, "Лео", 100, 3)
         };
 
         Obstacle[] obstacles = {
-                new Wall(1),
-                new Treadmill(60),
-                new Wall(2),
-                new Treadmill(100),
-                new Wall(3),
-                new Treadmill(120)
+                obstacleFactory.getObstacle(WALL, 1),
+                obstacleFactory.getObstacle(TREADMILL, 60),
+                obstacleFactory.getObstacle(WALL, 2),
+                obstacleFactory.getObstacle(TREADMILL, 100),
+                obstacleFactory.getObstacle(WALL, 3),
+                obstacleFactory.getObstacle(TREADMILL, 120)
         };
 
         printParticipantsInfo(participants);
