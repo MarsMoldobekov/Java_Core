@@ -16,7 +16,6 @@ public class ParticipantFactory {
             case CAT -> new Cat(name, runningRestriction, jumpingRestriction);
             case HUMAN -> new Human(name, runningRestriction, jumpingRestriction);
             case ROBOT -> new Robot(name, runningRestriction, jumpingRestriction);
-            default -> null;
         };
     }
 }

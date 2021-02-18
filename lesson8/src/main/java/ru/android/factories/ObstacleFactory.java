@@ -9,7 +9,6 @@ public class ObstacleFactory {
         return switch (obstacleType) {
             case TREADMILL -> new Treadmill(length);
             case WALL -> new Wall(length);
-            default -> null;
         };
     }
 }
