@@ -1,36 +1,54 @@
 @startuml
 
 package "participant" {
-    abstract class Participant {
-        #name: String
-        #runningRestriction: int
-        #jumpingRestriction: int
-        ---
-        +Participant(name: String, runningRestriction: int, jumpingRestriction: int)
-        +toString(): String {override}
-        +passObstacles(Obstacle[] obstacles): void
-        -checkDistance(distance: int): boolean
-        -checkHeight(height: int): boolean
+    interface Participant {
+        +{abstract}passObstacles(Obstacle[] obstacles): void
+        +{abstract}checkDistance(distance: int): boolean
+        +{abstract}checkHeight(height: int): boolean
         +{abstract}run(distance: int): void
         +{abstract}jump(height: int): void
     }
 
     class Cat {
+        -name: String
+        -runningRestriction: int
+        -jumpingRestriction: int
+        ---
         +Cat(name: String, runningRestriction: int, jumpingRestriction: int)
+        +toString(): String {override}
+        +passObstacles(obstacles: Obstacle[]): void {override}
         +run(distance: int): void {override}
         +jump(height: int): void {override}
+        +checkDistance(distance: int): boolean
+        +checkHeight(height: int): boolean
     }
 
     class Human {
+        -name: String
+        -runningRestriction: int
+        -jumpingRestriction: int
+        ---
         +Human(name: String, runningRestriction: int, jumpingRestriction: int)
+        +toString(): String {override}
+        +passObstacles(obstacles: Obstacle[]): void {override}
         +run(distance: int): void {override}
         +jump(height: int): void {override}
+        +checkDistance(distance: int): boolean
+        +checkHeight(height: int): boolean
     }
 
     class Robot {
+        -name: String
+        -runningRestriction: int
+        -jumpingRestriction: int
+        ---
         +Robot(name: String, runningRestriction: int, jumpingRestriction: int)
+        +toString(): String {override}
+        +passObstacles(obstacles: Obstacle[]): void {override}
         +run(distance: int): void {override}
         +jump(height: int): void {override}
+        +checkDistance(distance: int): boolean
+        +checkHeight(height: int): boolean
     }
 
     Participant <|-- Cat
@@ -40,7 +58,7 @@ package "participant" {
 
 package "obstacle" {
     interface Obstacle {
-        +info(): void
+        +{abstract}info(): void
     }
 
     class Treadmill {
@@ -64,7 +82,7 @@ package "obstacle" {
 }
 
 package "factories" {
-    enum ObstacleType{
+    enum ObstacleType {
         TREADMILL, WALL
     }
 
@@ -86,9 +104,9 @@ package "factories" {
 
 class Main {
     +{static}main(args: String[]): void
-    +{static}printParticipantInfo(participants: Participant[]): void
-    +{static}printObstaclesInfo(obstacles: Obstacles[]): void
-    +{static}runChallenge(participants: Participant[], obstacles: Obstacles[]): void
+    -{static}printParticipantsInfo(participant: Participant[]): void
+    -{static}printObstaclesInfo(obstacle: Obstacle[]): void
+    -{static}runChallenge(participant: Participant[], obstacle: Obstacle[]): void
 }
 
 Main -- ObstacleFactory
