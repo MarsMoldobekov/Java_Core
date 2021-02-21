@@ -1,8 +1,7 @@
 @startuml
-'https://plantuml.com/class-diagram
 
 package "participant" {
-    abstract class Participant{
+    abstract class Participant {
         #name: String
         #runningRestriction: int
         #jumpingRestriction: int
@@ -16,19 +15,19 @@ package "participant" {
         +{abstract}jump(height: int): void
     }
 
-    class Cat{
+    class Cat {
         +Cat(name: String, runningRestriction: int, jumpingRestriction: int)
         +run(distance: int): void {override}
         +jump(height: int): void {override}
     }
 
-    class Human{
+    class Human {
         +Human(name: String, runningRestriction: int, jumpingRestriction: int)
         +run(distance: int): void {override}
         +jump(height: int): void {override}
     }
 
-    class Robot{
+    class Robot {
         +Robot(name: String, runningRestriction: int, jumpingRestriction: int)
         +run(distance: int): void {override}
         +jump(height: int): void {override}
@@ -40,11 +39,11 @@ package "participant" {
 }
 
 package "obstacle" {
-    interface Obstacle{
+    interface Obstacle {
         +info(): void
     }
 
-    class Treadmill{
+    class Treadmill {
         -distance: int
         ---
         +getDistance(): int
@@ -52,7 +51,7 @@ package "obstacle" {
         +toString(): String {override}
     }
 
-    class Wall{
+    class Wall {
         -height: int
         ---
         +getHeight(): int
@@ -69,15 +68,15 @@ package "factories" {
         TREADMILL, WALL
     }
 
-    enum ParticipantType{
+    enum ParticipantType {
         HUMAN, CAT, ROBOT
     }
 
-    class ObstacleFactory{
+    class ObstacleFactory {
         +getObstacle(obstacleType: ObstacleType, length: int): Obstacle
     }
 
-    class ParticipantFactory{
+    class ParticipantFactory {
         +getParticipant(participant: Participant, name: String, runningRestriction: int, jumpingRestriction: int): Participant
     }
 
@@ -85,8 +84,11 @@ package "factories" {
     ParticipantFactory o.. Participant
 }
 
-class Main{
-    +main(args: String[]): void
+class Main {
+    +{static}main(args: String[]): void
+    +{static}printParticipantInfo(participants: Participant[]): void
+    +{static}printObstaclesInfo(obstacles: Obstacles[]): void
+    +{static}runChallenge(participants: Participant[], obstacles: Obstacles[]): void
 }
 
 Main -- ObstacleFactory
