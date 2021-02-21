@@ -14,12 +14,12 @@ public class Main {
         Plate plate = new Plate(50);
 
         makeCatsToEat(cats, plate);
-        plate.info();
+        System.out.println(plate.toString());
 
-        plate.addFood(15);
+        plate.addFood(10);
 
         makeCatsToEat(cats, plate);
-        plate.info();
+        System.out.println(plate.toString());
     }
 
     private static void makeCatsToEat(Cat[] cats, Plate plate) {

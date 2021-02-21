@@ -21,10 +21,6 @@ public class Cat {
                 '}';
     }
 
-    public void printCat() {
-        System.out.println(toString());
-    }
-
     public String isFull() {
         if (isFull) {
             return "Кот " + name + " ссыт.";
@@ -38,9 +34,13 @@ public class Cat {
             return;
         }
 
-        if (plate.isEnough(appetite)) {
+        if (isEnough(plate)) {
             plate.decreaseFood(appetite);
             isFull = true;
         }
+    }
+
+    private boolean isEnough(Plate plate) {
+        return appetite <= plate.getFood();
     }
 }
