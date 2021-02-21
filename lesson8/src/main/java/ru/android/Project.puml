@@ -1,0 +1,95 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package "participant" {
+    abstract class Participant{
+        #name: String
+        #runningRestriction: int
+        #jumpingRestriction: int
+        ---
+        +Participant(name: String, runningRestriction: int, jumpingRestriction: int)
+        +toString(): String {override}
+        +passObstacles(Obstacle[] obstacles): void
+        -checkDistance(distance: int): boolean
+        -checkHeight(height: int): boolean
+        +{abstract}run(distance: int): void
+        +{abstract}jump(height: int): void
+    }
+
+    class Cat{
+        +Cat(name: String, runningRestriction: int, jumpingRestriction: int)
+        +run(distance: int): void {override}
+        +jump(height: int): void {override}
+    }
+
+    class Human{
+        +Human(name: String, runningRestriction: int, jumpingRestriction: int)
+        +run(distance: int): void {override}
+        +jump(height: int): void {override}
+    }
+
+    class Robot{
+        +Robot(name: String, runningRestriction: int, jumpingRestriction: int)
+        +run(distance: int): void {override}
+        +jump(height: int): void {override}
+    }
+
+    Participant <|-- Cat
+    Participant <|-- Human
+    Participant <|-- Robot
+}
+
+package "obstacle" {
+    interface Obstacle{
+        +info(): void
+    }
+
+    class Treadmill{
+        -distance: int
+        ---
+        +getDistance(): int
+        +info(): void {override}
+        +toString(): String {override}
+    }
+
+    class Wall{
+        -height: int
+        ---
+        +getHeight(): int
+        +info(): void {override}
+        +toString(): String {override}
+    }
+
+    Obstacle <|.. Treadmill
+    Obstacle <|.. Wall
+}
+
+package "factories" {
+    enum ObstacleType{
+        TREADMILL, WALL
+    }
+
+    enum ParticipantType{
+        HUMAN, CAT, ROBOT
+    }
+
+    class ObstacleFactory{
+        +getObstacle(obstacleType: ObstacleType, length: int): Obstacle
+    }
+
+    class ParticipantFactory{
+        +getParticipant(participant: Participant, name: String, runningRestriction: int, jumpingRestriction: int): Participant
+    }
+
+    ObstacleFactory o.. Obstacle
+    ParticipantFactory o.. Participant
+}
+
+class Main{
+    +main(args: String[]): void
+}
+
+Main -- ObstacleFactory
+Main -- ParticipantFactory
+
+@enduml

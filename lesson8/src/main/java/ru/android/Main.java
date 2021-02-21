@@ -38,7 +38,7 @@ public class Main {
 
     private static void printParticipantsInfo(Participant[] participants) {
         for (Participant participant : participants) {
-            participant.info();
+            System.out.println(participant.toString());
         }
 
         System.out.println();

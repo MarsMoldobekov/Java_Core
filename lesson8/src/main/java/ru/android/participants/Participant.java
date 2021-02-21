@@ -15,10 +15,6 @@ public abstract class Participant {
         this.jumpingRestriction = jumpingRestriction;
     }
 
-    public void info() {
-        System.out.println(toString());
-    }
-
     @Override
     public String toString() {
         return "Participant{" +
@@ -64,7 +60,7 @@ public abstract class Participant {
         return height <= jumpingRestriction;
     }
 
-    public abstract void run(int length);
+    public abstract void run(int distance);
 
     public abstract void jump(int height);
 }
