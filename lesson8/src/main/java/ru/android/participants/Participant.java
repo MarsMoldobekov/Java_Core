@@ -27,7 +27,7 @@ public abstract class Participant {
     public void passObstacles(Obstacle[] obstacles) {
         for (Obstacle obstacle : obstacles) {
             if (obstacle instanceof Treadmill treadmill) {
-                int distance = treadmill.getDistance();
+                int distance = treadmill.distance();
 
                 if (checkDistance(distance)) {
                     run(distance);
@@ -37,7 +37,7 @@ public abstract class Participant {
                     break;
                 }
             } else if (obstacle instanceof Wall wall) {
-                int height = wall.getHeight();
+                int height = wall.height();
 
                 if (checkHeight(height)) {
                     jump(height);
