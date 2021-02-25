@@ -2,33 +2,33 @@ package ru.android;
 
 public class Main {
     private static class MyArraySizeException extends Exception {
-        private final String message;
+        private final String MESSAGE;
 
         public MyArraySizeException(String message) {
             super(message);
-            this.message = message;
+            this.MESSAGE = message;
         }
 
         @Override
         public String toString() {
             return "MyArraySizeException{" +
-                    "error='" + message + '\'' +
+                    "error='" + MESSAGE + '\'' +
                     '}';
         }
     }
 
     private static class MyArrayDataException extends Exception {
-        private final String message;
+        private final String MESSAGE;
 
         public MyArrayDataException(String message) {
             super(message);
-            this.message = message;
+            this.MESSAGE = message;
         }
 
         @Override
         public String toString() {
             return "MyArrayDataException{" +
-                    "error='" + message + '\'' +
+                    "error='" + MESSAGE + '\'' +
                     '}';
         }
     }
