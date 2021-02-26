@@ -1,0 +1,16 @@
+apple
+orange
+lemon
+gravity
+orange
+apple
+gravity
+lemon
+autumn
+summer
+winter
+spring
+winter
+autumn
+spring
+summer
