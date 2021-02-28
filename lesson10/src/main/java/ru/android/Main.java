@@ -17,7 +17,7 @@ public class Main {
     };
 
     public static void main(String[] args) {
-        ArrayList<String> array = readFile("./lesson10/src/main/resources/Test.txt");
+        ArrayList<String> array = readFile("./lesson10/src/main/java/ru/android/Test.txt");
         System.out.println(deleteDuplicates(array));
         countDuplicates(array);
 
