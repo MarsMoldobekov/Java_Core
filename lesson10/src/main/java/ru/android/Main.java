@@ -56,12 +56,8 @@ public class Main {
         Map<String, Integer> map = new HashMap<>();
 
         for (String word : arrayList) {
-            if (map.containsKey(word)) {
-                Integer i = map.get(word) + 1;
-                map.put(word, i);
-            } else {
-                map.put(word, 1);
-            }
+            int i = map.getOrDefault(word, 0) + 1;
+            map.put(word, i);
         }
 
         for (Map.Entry<String, Integer> entry: map.entrySet()){
