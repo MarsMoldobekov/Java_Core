@@ -1,4 +1,4 @@
-package ru.android.box;
+package ru.android.basket;
 
 import ru.android.fruits.Fruit;
 
