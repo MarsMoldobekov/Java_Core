@@ -7,6 +7,8 @@ public class Main {
     private static final int SIZE = 10_000_000;
     private static final int HALF_SIZE = SIZE / 2;
 
+    private static final float INIT_VALUE = 1.0F;
+
     public static void main(String[] args) {
         changeArray();
         changeArrayAsynchronously();
@@ -16,7 +18,7 @@ public class Main {
         float[] array = new float[SIZE];
 
         for (int i = 0; i < SIZE; i++) {
-            array[i] = 1.0f;
+            array[i] = INIT_VALUE;
         }
 
         long a = System.currentTimeMillis();
@@ -34,7 +36,7 @@ public class Main {
         float[] array2 = new float[HALF_SIZE];
 
         for (int i = 0; i < SIZE; i++) {
-            array[i] = 1.0f;
+            array[i] = INIT_VALUE;
         }
 
         long a = System.currentTimeMillis();
