@@ -1,11 +1,13 @@
 package ru.android.basket;
 
+import org.jetbrains.annotations.NotNull;
 import ru.android.fruits.Fruit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Basket<T extends Fruit> {
+public class Basket<T extends Fruit> implements Comparable<Basket<?>> {
     private final ArrayList<T> basket;
 
     public Basket() {
@@ -13,7 +15,7 @@ public class Basket<T extends Fruit> {
     }
 
     public List<T> getBasket() {
-        return basket;
+        return Collections.unmodifiableList(basket);
     }
 
     public void putFromBasket(Basket<? extends T> basket) {
@@ -29,11 +31,12 @@ public class Basket<T extends Fruit> {
         }
     }
 
-    public boolean compare(Basket<?> basket) {
-        return basket != null && getWeight() == basket.getWeight();
-    }
-
     public float getWeight() {
         return basket.size() * basket.get(0).getWeight();
+    }
+
+    @Override
+    public int compareTo(@NotNull Basket<?> basket) {
+        return (int) (getWeight() - basket.getWeight());
     }
 }
