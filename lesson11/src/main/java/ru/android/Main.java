@@ -39,7 +39,7 @@ public class Main {
         System.out.println(orangeBasket.getBasket());
 
         // comparing apple and orange baskets
-        System.out.println(appleBasket.compare(orangeBasket));
+        System.out.println(appleBasket.compareTo(orangeBasket));
 
         // putting fruits from one basket to another
         Basket<Apple> secondAppleBasket = new Basket<>();
