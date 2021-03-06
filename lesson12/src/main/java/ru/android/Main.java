@@ -1,9 +1,25 @@
 package ru.android;
 
+import java.util.concurrent.*;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Main {
+    private record Class(float[] array) implements Callable<float[]> {
+        @Override
+        public float[] call() {
+            float[] result = new float[array.length];
+            int length = array.length;
+
+            for (int i = 0; i < length; i++) {
+                result[i] = (float) (array[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f));
+            }
+
+            return result;
+        }
+    }
+
     private static final int SIZE = 10_000_000;
     private static final int HALF_SIZE = SIZE / 2;
 
@@ -44,20 +60,18 @@ public class Main {
         System.arraycopy(array, 0, array1, 0, HALF_SIZE);
         System.arraycopy(array, HALF_SIZE, array2, 0, HALF_SIZE);
 
-        new Thread(() -> {
-            for (int i = 0; i < HALF_SIZE; i++) {
-                array1[i] = (float) (array1[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f));
-            }
-        }).start();
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        Future<float[]> future = service.submit(new Class(array1));
+        Future<float[]> future2 = service.submit(new Class(array2));
 
-        new Thread(() -> {
-            for (int i = 0; i < HALF_SIZE; i++) {
-                array2[i] = (float) (array2[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f));
-            }
-        }).start();
+        try {
+            System.arraycopy(future.get(), 0, array, 0, HALF_SIZE);
+            System.arraycopy(future2.get(), 0, array, HALF_SIZE, HALF_SIZE);
+        } catch (InterruptedException | ExecutionException exception) {
+            exception.printStackTrace();
+        }
 
-        System.arraycopy(array1, 0, array, 0, HALF_SIZE);
-        System.arraycopy(array2, 0, array, HALF_SIZE, HALF_SIZE);
+        service.shutdown();
 
         System.out.println(System.currentTimeMillis() - a);
     }
