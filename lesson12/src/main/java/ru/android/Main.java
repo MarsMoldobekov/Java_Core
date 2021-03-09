@@ -6,7 +6,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Main {
-    private record Class(float[] array) implements Callable<float[]> {
+    private static record MyCallable(float[] array) implements Callable<float[]> {
+
         @Override
         public float[] call() {
             float[] result = new float[array.length];
@@ -39,9 +40,8 @@ public class Main {
 
         long a = System.currentTimeMillis();
 
-        for (int i = 0; i < SIZE; i++) {
-            array[i] = (float) (array[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f));
-        }
+        MyCallable myCallable = new MyCallable(array);
+        array = myCallable.call();
 
         System.out.println(System.currentTimeMillis() - a);
     }
@@ -61,11 +61,12 @@ public class Main {
         System.arraycopy(array, HALF_SIZE, array2, 0, HALF_SIZE);
 
         ExecutorService service = Executors.newFixedThreadPool(2);
-        Future<float[]> future = service.submit(new Class(array1));
-        Future<float[]> future2 = service.submit(new Class(array2));
+
+        Future<float[]> future1 = service.submit(new MyCallable(array1));
+        Future<float[]> future2 = service.submit(new MyCallable(array2));
 
         try {
-            System.arraycopy(future.get(), 0, array, 0, HALF_SIZE);
+            System.arraycopy(future1.get(), 0, array, 0, HALF_SIZE);
             System.arraycopy(future2.get(), 0, array, HALF_SIZE, HALF_SIZE);
         } catch (InterruptedException | ExecutionException exception) {
             exception.printStackTrace();
