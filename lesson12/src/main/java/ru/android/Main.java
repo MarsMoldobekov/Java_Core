@@ -1,11 +1,15 @@
 package ru.android;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Main {
     private static final int SIZE = 10_000_000;
     private static final int HALF_SIZE = SIZE / 2;
+    private static final int THREADS_COUNT = 2;
 
     private static final float INIT_VALUE = 1.0F;
 
@@ -44,8 +48,12 @@ public class Main {
         System.arraycopy(array, 0, array1, 0, HALF_SIZE);
         System.arraycopy(array, HALF_SIZE, array2, 0, HALF_SIZE);
 
-        new Thread(() -> changeElementsByFormula(array1, array1.length)).start();
-        new Thread(() -> changeElementsByFormula(array2, array2.length)).start();
+        ExecutorService service = Executors.newFixedThreadPool(THREADS_COUNT);
+
+        service.execute(() -> changeElementsByFormula(array1, array1.length));
+        service.execute(() -> changeElementsByFormula(array2, array2.length));
+
+        service.shutdown();
 
         synchronized (this) {
             System.arraycopy(array1, 0, array, 0, HALF_SIZE);
