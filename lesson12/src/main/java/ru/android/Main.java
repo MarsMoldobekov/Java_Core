@@ -52,11 +52,13 @@ public class Main {
 
         Future<Boolean> future1 = service.submit(() -> {
             changeElementsByFormula(array1, array1.length);
+            System.arraycopy(array1, 0, array, 0, HALF_SIZE);
             return true;
         });
 
         Future<Boolean> future2 = service.submit(() -> {
             changeElementsByFormula(array2, array2.length);
+            System.arraycopy(array2, 0, array, HALF_SIZE, HALF_SIZE);
             return true;
         });
 
@@ -72,11 +74,7 @@ public class Main {
             }
 
             if (finished) {
-                System.arraycopy(array1, 0, array, 0, HALF_SIZE);
-                System.arraycopy(array2, 0, array, HALF_SIZE, HALF_SIZE);
-
                 System.out.println(System.currentTimeMillis() - a);
-
                 break;
             }
         }
