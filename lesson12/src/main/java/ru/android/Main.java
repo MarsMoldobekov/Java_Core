@@ -27,7 +27,7 @@ public class Main {
             array[i] = INIT_VALUE;
         }
 
-        long a = System.currentTimeMillis();
+        final long a = System.currentTimeMillis();
 
         changeElementsByFormula(array, array.length);
 
@@ -43,20 +43,20 @@ public class Main {
             array[i] = INIT_VALUE;
         }
 
-        long a = System.currentTimeMillis();
+        final long a = System.currentTimeMillis();
 
         System.arraycopy(array, 0, array1, 0, HALF_SIZE);
         System.arraycopy(array, HALF_SIZE, array2, 0, HALF_SIZE);
 
-        ExecutorService service = Executors.newFixedThreadPool(THREADS_COUNT);
+        final ExecutorService service = Executors.newFixedThreadPool(THREADS_COUNT);
 
-        Future<Boolean> future1 = service.submit(() -> {
+        final Future<Boolean> future1 = service.submit(() -> {
             changeElementsByFormula(array1, array1.length);
             System.arraycopy(array1, 0, array, 0, HALF_SIZE);
             return true;
         });
 
-        Future<Boolean> future2 = service.submit(() -> {
+        final Future<Boolean> future2 = service.submit(() -> {
             changeElementsByFormula(array2, array2.length);
             System.arraycopy(array2, 0, array, HALF_SIZE, HALF_SIZE);
             return true;
@@ -80,16 +80,9 @@ public class Main {
         }
     }
 
-    /**
-     * changeElementsByFormula(array, length)
-     * @param array - массив
-     * @param length - количество элементов в массиве
-     * Изменяет элементы массива по формуле:
-     * result[i] = array[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f)
-     */
     private static void changeElementsByFormula(final float[] array, int length) {
         for (int i = 0; i < length; i++) {
-            array[i] = (float) (array[i] * sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f));
+            array[i] *= sin(0.2f + i / 5.0f) * cos(0.2f + i / 5.0f) * cos(0.4f + i / 2.0f);
         }
     }
 }
