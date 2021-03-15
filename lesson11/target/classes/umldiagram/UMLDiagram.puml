@@ -1,0 +1,46 @@
+@startuml
+
+package basket {
+    class Basket<T extends Fruit> {
+        -basket: ArrayList<T> {final}
+        ---
+        +getBasket(): List<T>
+        +addFruit(basket: Basket<? extends T>): void
+        +putFromBasket(fruits: List<? extends T>): void
+        +compare(basket: Basket<?>): boolean
+        +getWeight(): float
+    }
+}
+
+package factories {
+    enum FruitType {
+        APPLE, ORANGE
+    }
+
+    class FruitFactory {
+        +getFruit(fruitType: FruitType): Fruit
+    }
+}
+
+package fruits {
+    abstract class Fruit {
+        #weight: float
+        ---
+        +getWeight(): float
+    }
+
+    class Apple
+    class Orange
+
+    Fruit <-- Apple
+    Fruit <-- Orange
+}
+
+class Main
+
+FruitFactory .. Fruit
+
+Main .. FruitFactory
+Main .. Basket
+
+@enduml
