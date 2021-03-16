@@ -1,10 +1,11 @@
 package ru.android.race.stages;
 
-import ru.android.car.Car;
+import ru.android.race.car.Car;
+import ru.android.concurrent.SingleSemaphore;
 
 public class Road extends Stage {
-    public Road(int length) {
-        this.length = length;
+    public Road(SingleSemaphore semaphore, int length) {
+        super(semaphore, length);
         this.description = "Дорога " + length + " метров.";
     }
 
