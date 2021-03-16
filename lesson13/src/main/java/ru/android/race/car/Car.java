@@ -1,8 +1,8 @@
-package ru.android.car;
+package ru.android.race.car;
 
 import ru.android.concurrent.SingleCountDownLatch;
 import ru.android.concurrent.SingleCyclicBarrier;
-import ru.android.concurrent.SingleSemaphore;
+import ru.android.organization.Standings;
 import ru.android.race.stages.Stage;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.concurrent.BrokenBarrierException;
 public class Car implements Runnable {
     private SingleCyclicBarrier cyclicBarrier;
     private SingleCountDownLatch countDownLatch;
-    private SingleSemaphore semaphore;
+    private Standings standings;
 
     private static int CARS_COUNT;
     private List<Stage> stages;
@@ -42,13 +42,17 @@ public class Car implements Runnable {
             exception.printStackTrace();
         }
 
-        //TODO --- stage.go(this) with the tunnel
-        /*for (Stage stage : stages) {
+        for (Stage stage : stages) {
             stage.go(this);
-        }*/
+        }
 
         System.out.println(this.name + " завершил гонку.");
+        writePosition();
         countDownLatch.countDown();
+    }
+
+    private void writePosition() {
+        standings.writeStandings(this.name);
     }
 
     public static Builder getBuilder() {
@@ -66,13 +70,13 @@ public class Car implements Runnable {
             return this;
         }
 
-        public Builder setSingleSemaphore(final SingleSemaphore semaphore) {
-            Car.this.semaphore = semaphore;
+        public Builder setRaceStages(final List<Stage> stages) {
+            Car.this.stages = stages;
             return this;
         }
 
-        public Builder setRaceStages(final List<Stage> stages) {
-            Car.this.stages = stages;
+        public Builder setStandings(final Standings standings) {
+            Car.this.standings = standings;
             return this;
         }
 
